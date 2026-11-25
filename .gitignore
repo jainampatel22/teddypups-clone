@@ -5,3 +5,4 @@ data/*.db-*
 .env*
 data/*.txt
 public/media/upload-tmp
+.vercel

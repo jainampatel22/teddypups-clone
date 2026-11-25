@@ -2,7 +2,9 @@
 
 Pixel-perfect clone of https://puppy.instabizweb.com (TeddyPups U.A.E.) with its own SQLite backend and admin panel.
 
-**How it was built:** most of this project was built with AI: Claude, running in the Aside AI browser, as the coding agent. I directed it step by step: research and data extraction from the live site, architecture, page-by-page builds checked side by side against the original at 1440px and 390px, the admin panel, testing and deployment.
+**Live:** https://teddypups-clone-omega.vercel.app · Admin: https://teddypups-clone-omega.vercel.app/admin
+
+**How it was built:** most of this project was built with AI: Claude, running in the Aside AI browser, as the coding agent. I directed it step by step: research and data extraction from the live site, architecture, page-by-page builds checked side by side against the original at 1440px and 390px, the admin panel, testing and deployment. The exact prompts are in [PROMPTS.md](PROMPTS.md).
 
 ## Run it
 
