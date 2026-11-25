@@ -1,0 +1,32 @@
+{
+  "siteName": "TeddyPups U.A.E.",
+  "shortName": "TeddyPups",
+  "tagline": "every puppy is family",
+  "footerHeading": "Home, at last.",
+  "footerBlurb": "TeddyPups U.A.E. is a Dubai-based brand specializing in miniature puppies, offering premium services and worldwide shipping.",
+  "whatsappNumber": "919898124987",
+  "whatsappMessage": "Hi Insta Biz Web, I'd like to discuss a project.",
+  "phoneDisplay": "+971 50 000 0000",
+  "phoneTel": "+971500000000",
+  "email": "info@instabizweb.com",
+  "address": "Downtown Dubai, United Arab Emirates",
+  "socials": [
+    {
+      "label": "Instagram",
+      "href": "https://www.instabizweb.com/"
+    },
+    {
+      "label": "TikTok",
+      "href": "https://www.instabizweb.com/"
+    },
+    {
+      "label": "Facebook",
+      "href": "https://www.instabizweb.com/"
+    }
+  ],
+  "seo": {
+    "title": "TeddyPups U.A.E. — Premium teacup puppies in Dubai",
+    "description": "Teddy bear and teacup puppies in Dubai. Meet local puppies in our Downtown Dubai showroom or bring home a rare breed imported from trusted breeders.",
+    "ogImage": "/brand/logo.png"
+  }
+}

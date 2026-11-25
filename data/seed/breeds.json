@@ -1,0 +1,42 @@
+[
+  {
+    "slug": "maltipoo",
+    "name": "Maltipoo",
+    "sortOrder": 0
+  },
+  {
+    "slug": "pomeranian",
+    "name": "Pomeranian",
+    "sortOrder": 1
+  },
+  {
+    "slug": "poodle",
+    "name": "Poodle",
+    "sortOrder": 2
+  },
+  {
+    "slug": "cavapoo",
+    "name": "Cavapoo",
+    "sortOrder": 3
+  },
+  {
+    "slug": "shih-tzu",
+    "name": "Shih Tzu",
+    "sortOrder": 4
+  },
+  {
+    "slug": "maltese",
+    "name": "Maltese",
+    "sortOrder": 5
+  },
+  {
+    "slug": "bichon",
+    "name": "Bichon",
+    "sortOrder": 6
+  },
+  {
+    "slug": "pomsky",
+    "name": "Pomsky",
+    "sortOrder": 7
+  }
+]
