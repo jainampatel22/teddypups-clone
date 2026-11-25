@@ -12,7 +12,7 @@ export const runtime = "nodejs";
 export async function GET(_req: Request, { params }: { params: Promise<{ file: string }> }) {
   const { file } = await params;
   if (!/^[A-Za-z0-9_-]+(-640)?\.(webp|mp4)$/.test(file)) return new Response("Not found", { status: 404 });
-  const p = path.join(MEDIA_DIR, file);
+  const p = path.join(/*turbopackIgnore: true*/ MEDIA_DIR, file);
   if (!fs.existsSync(p)) return new Response("Not found", { status: 404 });
   return new Response(fs.readFileSync(p), {
     headers: { "content-type": file.endsWith(".mp4") ? "video/mp4" : "image/webp", "cache-control": "public, max-age=31536000, immutable" },

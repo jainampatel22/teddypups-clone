@@ -54,34 +54,43 @@ export function ensureAdmin() {
 
 export type AdminUser = { id: string; email: string };
 
+/*
+ * Stateless sessions: the cookie is "<payload>.<hmac>" where payload = base64url(JSON {email, exp}).
+ * Works across serverless instances (no session table lookup). Secret: ADMIN_SESSION_SECRET env,
+ * or locally a value derived from the first admin's password hash (so a password change logs everyone out).
+ */
+function sessionSecret(): string {
+  if (process.env.ADMIN_SESSION_SECRET) return process.env.ADMIN_SESSION_SECRET;
+  const row: any = getDb().prepare("SELECT password_hash FROM admin_users ORDER BY created_at LIMIT 1").get();
+  return crypto.createHash("sha256").update("tp-session:" + (row?.password_hash || "none")).digest("hex");
+}
+const sign = (payload: string) => crypto.createHmac("sha256", sessionSecret()).update(payload).digest("base64url");
+
 export async function createSession(userId: string) {
-  const token = crypto.randomBytes(32).toString("base64url");
+  const row: any = getDb().prepare("SELECT email FROM admin_users WHERE id = ?").get(userId);
   const expires = new Date(Date.now() + SESSION_DAYS * 86400_000);
-  getDb().prepare("INSERT INTO admin_sessions (token, user_id, expires_at) VALUES (?,?,?)").run(token, userId, expires.toISOString());
-  (await cookies()).set(SESSION_COOKIE, token, {
+  const payload = Buffer.from(JSON.stringify({ email: row?.email, exp: expires.getTime() })).toString("base64url");
+  (await cookies()).set(SESSION_COOKIE, `${payload}.${sign(payload)}`, {
     httpOnly: true, sameSite: "lax", secure: process.env.NODE_ENV === "production", path: "/", expires,
   });
 }
 
 export async function destroySession() {
-  const jar = await cookies();
-  const token = jar.get(SESSION_COOKIE)?.value;
-  if (token) getDb().prepare("DELETE FROM admin_sessions WHERE token = ?").run(token);
-  jar.delete(SESSION_COOKIE);
+  (await cookies()).delete(SESSION_COOKIE);
 }
 
 export async function getAdmin(): Promise<AdminUser | null> {
   ensureAdmin();
   const token = (await cookies()).get(SESSION_COOKIE)?.value;
-  if (!token) return null;
-  const db = getDb();
-  const row: any = db.prepare("SELECT s.expires_at, u.id, u.email FROM admin_sessions s JOIN admin_users u ON u.id = s.user_id WHERE s.token = ?").get(token);
-  if (!row) return null;
-  if (new Date(row.expires_at).getTime() < Date.now()) {
-    db.prepare("DELETE FROM admin_sessions WHERE token = ?").run(token);
-    return null;
-  }
-  return { id: row.id, email: row.email };
+  if (!token || !token.includes(".")) return null;
+  const [payload, mac] = token.split(".");
+  const expected = sign(payload);
+  if (mac.length !== expected.length || !crypto.timingSafeEqual(Buffer.from(mac), Buffer.from(expected))) return null;
+  let data: { email?: string; exp?: number };
+  try { data = JSON.parse(Buffer.from(payload, "base64url").toString("utf8")); } catch { return null; }
+  if (!data.email || !data.exp || data.exp < Date.now()) return null;
+  const row: any = getDb().prepare("SELECT id, email FROM admin_users WHERE email = ?").get(data.email);
+  return row ? { id: String(row.id), email: String(row.email) } : null;
 }
 
 /** For pages and server actions: redirects to the login page when not signed in. */

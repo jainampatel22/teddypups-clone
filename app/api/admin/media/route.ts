@@ -33,8 +33,8 @@ function writeImage(main: Buffer, small: Buffer, meta: NonNullable<ReturnType<ty
   if (!isWebp(main) || !isWebp(small)) throw new Error("Images must be converted to WebP before upload.");
   const id = shortId();
   fs.mkdirSync(MEDIA_DIR, { recursive: true });
-  fs.writeFileSync(path.join(MEDIA_DIR, `${id}.webp`), main);
-  fs.writeFileSync(path.join(MEDIA_DIR, `${id}-640.webp`), small);
+  fs.writeFileSync(path.join(/*turbopackIgnore: true*/ MEDIA_DIR, `${id}.webp`), main);
+  fs.writeFileSync(path.join(/*turbopackIgnore: true*/ MEDIA_DIR, `${id}-640.webp`), small);
   insertMedia({ id, kind: "image", url: `/media/${id}.webp`, width: meta.width, height: meta.height, alt, caption: meta.caption, color: meta.color, blurDataUrl: meta.blurDataUrl });
   return id;
 }
@@ -68,7 +68,7 @@ export async function POST(req: Request) {
       const posterId = poster && posterSmall && pmeta ? writeImage(poster, posterSmall, pmeta, meta.alt) : null;
       const id = shortId();
       fs.mkdirSync(MEDIA_DIR, { recursive: true });
-      fs.writeFileSync(path.join(MEDIA_DIR, `${id}.mp4`), file);
+      fs.writeFileSync(path.join(/*turbopackIgnore: true*/ MEDIA_DIR, `${id}.mp4`), file);
       insertMedia({ id, kind: "video", url: `/media/${id}.mp4`, width: meta.width, height: meta.height, alt: meta.alt, caption: meta.caption, color: pmeta?.color || meta.color, blurDataUrl: null, durationS: meta.durationS, posterId });
       return Response.json({ media: getMedia(id) });
     }

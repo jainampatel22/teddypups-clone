@@ -5,7 +5,8 @@ import { getDb, getMedia, uid, getPuppyById } from "@/lib/db";
 import type { Media, Settings } from "@/lib/types";
 
 const db = () => getDb();
-export const MEDIA_DIR = path.join(process.cwd(), "public", "media");
+// Uploads go to public/media locally; on serverless hosts set MEDIA_DIR to a writable path (e.g. /tmp/media).
+export const MEDIA_DIR: string = process.env.MEDIA_DIR || path.join(/*turbopackIgnore: true*/ process.cwd(), "public", "media");
 
 export const slugify = (s: string) =>
   s.toLowerCase().normalize("NFKD").replace(/[\u0300-\u036f]/g, "").replace(/&/g, " and ").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 80) || "puppy";
@@ -165,7 +166,7 @@ export function deleteMediaIfUnused(id: string): string | null {
   const m: any = db().prepare("SELECT * FROM media WHERE id = ?").get(id);
   if (!m) return null;
   db().prepare("DELETE FROM media WHERE id = ?").run(id);
-  for (const f of [`${id}.webp`, `${id}-640.webp`, `${id}.mp4`]) fs.rmSync(path.join(MEDIA_DIR, f), { force: true });
+  for (const f of [`${id}.webp`, `${id}-640.webp`, `${id}.mp4`]) fs.rmSync(path.join(/*turbopackIgnore: true*/ MEDIA_DIR, f), { force: true });
   if (m.poster_id) deleteMediaIfUnused(m.poster_id);
   return null;
 }
