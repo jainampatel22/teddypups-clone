@@ -1,12 +1,32 @@
 {
+  "hero": {
+    "heading": "Premium teacup puppies in Dubai",
+    "body": "Meet your new best friend in our Dubai showroom, or order a rare miniature breed from trusted breeders worldwide.",
+    "data": {
+      "note": "every puppy is family",
+      "line1": "Premium teacup",
+      "line2": "puppies in Dubai",
+      "ctaLabel": "View available puppies",
+      "ctaHref": "/puppies",
+      "cta2Label": "Enquire on WhatsApp"
+    },
+    "media": []
+  },
   "meet": {
     "key": "meet",
     "heading": "Meet the pups",
     "body": "Real puppies, real photos, looking for their families right now.",
     "data": {
       "ctaHref": "/puppies",
-      "ctaLabel": "See all available puppies"
+      "ctaLabel": "See all available puppies",
+      "allLabel": "Meet them all"
     },
+    "media": []
+  },
+  "paths": {
+    "heading": "Two ways to meet your puppy",
+    "body": "",
+    "data": {},
     "media": []
   },
   "journey": {
@@ -36,7 +56,9 @@
         "g_e4ebbc7fyG",
         "skvodl2NZiKq",
         "dSAUmXs8Qai9"
-      ]
+      ],
+      "greeting": "Hi TeddyPups! I'd love to know more about your puppies.",
+      "composeLabel": "Say hello on WhatsApp"
     },
     "media": [
       {
@@ -130,6 +152,14 @@
       }
     ]
   },
+  "trust": {
+    "heading": "Why families trust TeddyPups",
+    "body": "",
+    "data": {
+      "kicker": "puppy passport"
+    },
+    "media": []
+  },
   "families": {
     "key": "families",
     "heading": "Happy families & puppies",
@@ -138,6 +168,22 @@
       "ctaHref": "/happy-families",
       "ctaLabel": "See every happy family"
     },
+    "media": []
+  },
+  "questions": {
+    "heading": "Questions, answered",
+    "body": "",
+    "data": {
+      "ctaLabel": "Read all questions",
+      "ctaHref": "/faq",
+      "count": 3
+    },
+    "media": []
+  },
+  "cta": {
+    "heading": "Ready to meet your new best friend?",
+    "body": "Bring home a healthy, happy teacup or designer puppy with expert guidance every step of the way. We help you find the right match and ensure a smooth, safe delivery across the UAE.",
+    "data": {},
     "media": []
   }
 }

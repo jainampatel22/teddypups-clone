@@ -1,0 +1,5 @@
+{
+  "header": { "heading": "Available puppies", "body": "Every listing shows real photos of the actual puppy. Open a profile to see them all, then ask us about them on WhatsApp.", "data": { "kicker": "from Teddy's sketchbook", "caption": "self-portrait", "seoTitle": "Available puppies", "seoDescription": "Teacup and teddy bear puppies available now in Dubai and imported from trusted breeders — every listing shows real photos of the puppy." } },
+  "empty": { "heading": "No puppies match just now.", "body": "Tell us what you're hoping for and we'll let you know what's in our showroom or what we can bring in for you.", "data": {} },
+  "gone": { "heading": "Already gone home", "body": "These puppies have found their families.", "data": { "ctaLabel": "See the puppies who've gone home", "ctaHref": "/gone-home", "count": 5 } }
+}

@@ -1,0 +1,12 @@
+/* Extra CSS for the pages worker (replaces framer-motion variants used by the original photo viewer). */
+@keyframes tp-clone-viewer-in {
+  0% { opacity: 0; transform: translateX(calc(70px * var(--dir, 1))) rotate(calc(5deg * var(--dir, 1))) scale(.92); }
+  60% { opacity: 1; transform: translateX(calc(-4px * var(--dir, 1))) rotate(calc(-.3deg * var(--dir, 1))) scale(1.005); }
+  100% { opacity: 1; transform: none; }
+}
+@keyframes tp-clone-viewer-out {
+  to { opacity: 0; transform: translateX(calc(-70px * var(--dir, 1))) rotate(calc(-5deg * var(--dir, 1))) scale(.92); }
+}
+.tp-clone-viewer-in { animation: tp-clone-viewer-in .5s cubic-bezier(.22, 1, .36, 1) both; }
+.tp-clone-viewer-out { animation: tp-clone-viewer-out .22s ease-out both; pointer-events: none; }
+@media (prefers-reduced-motion: reduce) { .tp-clone-viewer-in, .tp-clone-viewer-out { animation: none; } }

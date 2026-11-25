@@ -82,8 +82,8 @@ export function localMediaUrl(url: string, kind: string) {
 export function upsertMedia(db: DatabaseSync, m: any): string | null {
   if (!m) return null;
   const posterId = m.poster ? upsertMedia(db, m.poster) : null;
-  let w = m.width, h = m.height;
-  if (m.kind !== "video" && w > 1920) { h = Math.round((h * 1920) / w); w = 1920; }
+  // Keep the original pixel dimensions (exact aspect ratio); the stored WebP is capped at 1920px wide.
+  const w = m.width, h = m.height;
   db.prepare(`INSERT INTO media (id, kind, url, width, height, alt, caption, focal_x, focal_y, color, blur_data_url, duration_s, poster_id)
     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)
     ON CONFLICT(id) DO UPDATE SET alt=excluded.alt, caption=CASE WHEN excluded.caption<>'' THEN excluded.caption ELSE media.caption END`)
@@ -201,7 +201,7 @@ function rowToPuppy(r: any, cache = mediaCache()): Puppy {
 
 export function getSettings(): Settings {
   const rows = getDb().prepare("SELECT key, value FROM settings").all() as any[];
-  return Object.fromEntries(rows.map((r) => [r.key, JSON.parse(r.value)])) as Settings;
+  return Object.fromEntries(rows.map((r) => [String(r.key), JSON.parse(r.value)])) as Settings;
 }
 
 export function whatsappHref(s: Settings = getSettings(), text?: string) {
@@ -232,9 +232,11 @@ export function getPuppyById(id: string): Puppy | null {
   return r ? rowToPuppy(r) : null;
 }
 
-export const listBreeds = () => getDb().prepare("SELECT slug, name FROM breeds ORDER BY sort_order, name").all() as Ref[];
-export const listOrigins = () => getDb().prepare("SELECT slug, name FROM origins ORDER BY sort_order").all() as Ref[];
-export const listCollections = () => getDb().prepare("SELECT slug, name FROM collections ORDER BY sort_order").all() as Ref[];
+// node:sqlite rows have a null prototype; map to plain objects so they can cross into client components.
+const refs = (rows: any[]): Ref[] => rows.map((r) => ({ slug: String(r.slug), name: String(r.name) }));
+export const listBreeds = () => refs(getDb().prepare("SELECT slug, name FROM breeds ORDER BY sort_order, name").all());
+export const listOrigins = () => refs(getDb().prepare("SELECT slug, name FROM origins ORDER BY sort_order").all());
+export const listCollections = () => refs(getDb().prepare("SELECT slug, name FROM collections ORDER BY sort_order").all());
 
 export function listHappyPhotos(opts: { homeOnly?: boolean } = {}): HappyPhoto[] {
   const rows = getDb().prepare(`SELECT * FROM happy_photos ${opts.homeOnly ? "WHERE show_on_home = 1" : ""} ORDER BY sort_order`).all() as any[];
